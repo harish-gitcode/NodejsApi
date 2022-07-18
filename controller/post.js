@@ -1,4 +1,6 @@
 const Post = require("../models/post");
+const formidable=require("formidable");
+const fs=require("fs");
 
 exports.getPosts = (req, res) => {
 
@@ -9,8 +11,32 @@ exports.getPosts = (req, res) => {
         .catch(err => console.error(err));
 };
 
-exports.createPost = (req, res) => {
-    const post = new Post(req.body);
+exports.createPost = (req, res,next) => {
+    let form= new formidable.IncomingForm();
+    form.keepExtensions=true;
+    form.parse(req,(err,fields,files)=>{
+        if(err){
+            return res.status(400).json({ errors:"Image couldn't be uploaded"});
+        }
+        let post= new Post(fields)
+
+        req.profile.hashed_password = undefined;
+        req.profile.salt = undefined;
+        post.Author=req.profile
+        if(files.photo){
+             post.photo.data=fs.readFileSync(files.photo.path);
+             post.photo.contentType=files.photo.type;
+        } 
+        post.save((err,result)=>{
+            if(err){
+               return  res.status(400).json({err});
+            }
+            res.json(result);
+
+        })
+        
+    })
+        
     // console.log("Creating POST: ",req.body);
     // if (err) {
     //     return res.status(400).json({ error: err });
@@ -18,10 +44,10 @@ exports.createPost = (req, res) => {
     // res.status(200).json({
     //     post: result
     // });
-    post.save().then(result => {
-        res.status(200).json({
-            post: result
-        });
-    });
+    // post.save().then(result => {
+    //     res.status(200).json({
+    //         post: result
+    //     });
+    // });
 
 };

@@ -25,10 +25,11 @@ exports.userValidator= (req,res,next)=>{
     req.check("name","Name must be between 3 to 40 characters").isLength({
         min:3,max: 40
     });
-    req.check("email","email must be between 3 to 100 character").matches(/.+\@.+\.+/)
-    .withMessage("Email must contain @")
-    .isLength({min:3,max:100})
+    // req.check("email","email must be between 3 to 100 character").matches(/.+\@.+\.+/)
+    // .withMessage("Email must contain @")
+    // .isLength({min:3,max:100})
 
+    req.check("email").isEmail().withMessage("Invalid email !");
     req.check("password","password can't be empty").notEmpty();
     req.check("password").isLength({
         min:6,max: 40

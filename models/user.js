@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    created: {
+    Joined: {
         type: Date,
         default: Date.now
     },
@@ -36,6 +36,11 @@ userSchema.virtual("password")
     })
 
 userSchema.methods={
+
+    authenticate: function (text){
+        return this.encryptPassword(text)===this.hashed_password;
+    },
+
     encryptPassword: function (password) {
         if (!password) return "";
         try {

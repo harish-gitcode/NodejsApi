@@ -1,10 +1,12 @@
-const express = require('express');
+const router = require('express').Router();
 const {getPosts,createPost}=require("../controller/post");
 const {PostValidator}=require("../validate")//no need to add index as it is automatically loaded
+const {userByid}= require("../controller/user");
+const {auth,hasAuth}=require("../controller/auth");
 
-const router=express.Router();
 
-router.get("/",getPosts);
-router.post("/post",PostValidator,createPost);
+router.get("/post",getPosts);
+router.post("/post/:id",auth,createPost,PostValidator);
+router.param("id",userByid);
 
 module.exports=router;

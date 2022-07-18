@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const bp = require("body-parser");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const expressValidator = require('express-validator');
 
 app.use(bp.json());
+app.use(cookieParser());
 app.use(expressValidator());
 
 mongoose.connect(
@@ -18,13 +20,21 @@ mongoose.connection.on("error", err => {
 });
 
 const postRoutes = require("./routes/post");
-const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/session");
+const {err} = require("./controller/auth");
+const userRoutes = require("./routes/user");
+const useridRoutes = require("./routes/userid");
 
 // middleware
 // app.use(morgan("dev"));
 
-app.use("/", postRoutes);
-app.use("/", authRoutes);
+app.use(postRoutes);
+app.use(authRoutes);
+app.use(userRoutes);
+app.use(useridRoutes);
+app.use(err);
+
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
