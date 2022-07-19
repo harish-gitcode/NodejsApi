@@ -1,0 +1,12 @@
+{
+        "get  /": "home Page(with api route info)",
+        "post  /signup": "signup",
+        "post  /login": "login",
+        "delete  /login": "logout",
+        "get  /users": "get all users",
+        "/:userId": "get/update/delete user",
+        "/posts": "get all posts",
+        "post  post/:userId": "create new post",
+        "get   post/:userId": "get posts by user",
+        "post/:postId": "update/delete post"
+}

@@ -5,10 +5,11 @@ const bp = require("body-parser");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const expressValidator = require('express-validator');
-
+const cors=require('cors');
 app.use(bp.json());
 app.use(cookieParser());
 app.use(expressValidator());
+app.use(cors());
 
 mongoose.connect(
     // "mongodb://127.0.0.1:27017/newDB"

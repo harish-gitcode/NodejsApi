@@ -1,8 +1,14 @@
 const User = require("../models/user");
 const _=require("lodash");
+const fs = require("fs");
 
 exports.home = function (req, res) {
-    res.json({ page: "Home" });
+    fs.readFile('docs/apiDocs.json',(err,data)=>{
+        if(err) return res.status(400).json({err});
+        const docs=JSON.parse(data);
+        res.json(docs);
+    })
+
 };
 
 exports.getAllUsers = (req, res) => {
